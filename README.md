@@ -14,3 +14,17 @@ DRF version: 3.9.latest
 
 run `docker-compose run app sh -c "django-admin startproject app ."`
 it starts a new project called `app` in the current directory
+
+## Create a core directory where to store the core files of our project
+
+run `docker-compose run app sh -c "python manage.py startapp core"`
+
+## Make migrations everytime we update the model / database
+
+run `docker-compose run app sh -c "python manage.py makemigrations core"`
+
+## Add postgresql
+
+Do corresponding updates to requirements, Dockerfile and docker-compose to add the packages to install and set up the configurations, then run `docker-compose build`
+
+##
