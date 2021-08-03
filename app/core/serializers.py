@@ -42,7 +42,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         then add the ingredients one by one and create the PK-FK relationship.
         - validated_data contains the payload from the POST request.
         
-        POST payload example on 'recipes/1/':
+        POST payload example on 'recipes/':
         {
             "name": "Penne carbonara",
             "description": "Super creamy and Amazing",
