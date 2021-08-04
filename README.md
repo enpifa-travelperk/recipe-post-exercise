@@ -28,7 +28,7 @@ run `docker-compose run app sh -c "python manage.py migrate"`
 
 Do corresponding updates to requirements, Dockerfile and docker-compose to add the packages to install and set up the configurations, then run `docker-compose build`
 
-## PROBLEMS
+## CONCERNS
 
 To create a recipe associated to one or more ingredients, I can try:
 {
@@ -52,3 +52,7 @@ but this throws a 500 internal server error...
 DETAIL:  Failing row contains (9, salsasita, null).```
 
 I'm not sure if I can create an ingredient that I can add later on when creating recipes.
+
+`/api/recipes/` is not showing the recipes once created, but `/api/recipes/1/` is showing the recipe with id 1
+
+when updating a recipe with new ingredients, the new ingredients are created and shown on `/api/ingredients/` but the tests don't show them
