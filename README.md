@@ -22,6 +22,7 @@ run `docker-compose run app sh -c "python manage.py startapp core"`
 ## Make migrations everytime we update the model / database
 
 run `docker-compose run app sh -c "python manage.py makemigrations core"`
+run `docker-compose run app sh -c "python manage.py migrate"`
 
 ## Add postgresql
 
@@ -39,7 +40,7 @@ To create a recipe associated to one or more ingredients, I can try:
 "ingredients" is expecting a list of primary keys
 However, we don't have ingredients. We should create some.
 
-We can't create new ingredients on the browser because the new ingredients need to be associated to a recipe, but we can't set it with the current viewer
+We can't create new ingredients on the browser because the new ingredients need to be associated to a recipe, but we can't set it with the current viewer.
 
 If I try with the VS extension, we can try something like:
 {

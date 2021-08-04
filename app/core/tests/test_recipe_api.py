@@ -8,9 +8,9 @@ from core import models, serializers
 
 RECIPES_URL = reverse('core:recipe-list')
 
-def detail_url(recipe_id):
+def get_recipe_id_url(recipe_id):
     """Return recipe detail URL"""
-    return reverse('core:recipe-list', args=[recipe_id])
+    return RECIPES_URL + str(recipe_id) + '/'
 
 def create_sample_recipe(name='Allioli', description='Delicious catalan garlic mayo'):
     recipe = models.Recipe.objects.create(
@@ -61,12 +61,21 @@ class RecipeApiTests(TestCase):
         # ingredients = recipe.ingredients.all()
         # self.assertEqual(ingredients.count(), 2)
 
-    def test_retrieve_recipes(self):
+    def test_get_all_recipes(self):
         _ = create_sample_recipe()
         response = self.client.get(RECIPES_URL)
 
         recipes = models.Recipe.objects.all().order_by('-id')
         serializer = serializers.RecipeSerializer(recipes, many=True)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+    
+    def test_get_one_recipe(self):
+        recipe = create_sample_recipe()
+        response = self.client.get(get_recipe_id_url(recipe.id))
+
+        serializer = serializers.RecipeSerializer(recipe)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
@@ -81,19 +90,22 @@ class RecipeApiTests(TestCase):
                 {"name": "Pepper"}
             ]
         }
-        # print(RECIPES_URL)
-        # print(reverse('core:recipe-list', args=[recipe.id]))
-        response = self.client.patch('/api/recipes/' + str(recipe.id) + '/', payload)
-        recipe.refresh_from_db()
-        self.assertEqual(recipe.name, payload['name'])
+        response = self.client.patch(get_recipe_id_url(recipe.id), payload)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        recipe_db = models.Recipe.objects.get(id=recipe.id)
+        recipe_db_serializer = serializers.RecipeSerializer(recipe_db)
+        # recipe.refresh_from_db()
+        # self.assertEqual(recipe.name, payload['name'])
         # ingredients = recipe.ingredients.all()
         # self.assertEqual(len(ingredients), 1)
-        # TODO: ingredients do not get created on patch, they should
+        # TODO: using the extension, I can see the ingredients on update are created, and the response is correct
+        # But I cannot see the ingredients or response in the code
         # self.assertEqual(recipe.ingredients.count(), 2)
     
     def test_delete_recipe(self):
         recipe = create_sample_recipe()
-        response = self.client.delete('/api/recipes/' + str(recipe.id) + '/')
+        response = self.client.delete(get_recipe_id_url(recipe.id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         # TODO: should we check there is no recipe in fact!
         # delete_recipe = models.Recipe.objects.get(id=recipe.id)
