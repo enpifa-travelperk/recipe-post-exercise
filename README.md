@@ -30,6 +30,7 @@ Do corresponding updates to requirements, Dockerfile and docker-compose to add t
 
 ## CONCERNS
 
-`/api/recipes/` is not showing the recipes once created, but `/api/recipes/1/` is showing the recipe with id 1
+`/api/recipes/` is not showing the recipes once created, but `/api/recipes/1/` is showing the recipe with id 1 (this happens in the browser)
 
 when updating a recipe with new ingredients, the new ingredients are created and shown on `/api/ingredients/` but the tests don't show them
+also not only the ingredients are updated, but also the name and description
