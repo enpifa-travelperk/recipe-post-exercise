@@ -23,4 +23,4 @@ class Recipe(models.Model):
     # ingredients = models.ManyToManyField('Ingredient')
 
     def __str__(self):
-        return self.name
+        return self.name # instance value will be whatever we return here
